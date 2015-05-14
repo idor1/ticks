@@ -9,6 +9,7 @@
     <url>http://maven.apache.org</url>
     <modules>
         <module>tick.core</module>
+        <module>tick.web</module>
     </modules>
     <properties>
         <jdk-path>d:/Java/jdk1.8.0_45</jdk-path>

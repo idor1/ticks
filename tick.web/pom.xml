@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>tick.core</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>tick.web</artifactId>
+    <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>tick.core</name>
+    <name>tick.web</name>
     <parent>
         <groupId>com.id.tick</groupId>
         <artifactId>tick.master</artifactId>
