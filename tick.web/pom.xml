@@ -2,13 +2,90 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>tick.web</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>tick.web</name>
+    <!--<parent>-->
+        <!--<groupId>com.id.tick</groupId>-->
+        <!--<artifactId>tick.master</artifactId>-->
+        <!--<version>1.0-SNAPSHOT</version>-->
+    <!--</parent>-->
+
     <parent>
-        <groupId>com.id.tick</groupId>
-        <artifactId>tick.master</artifactId>
-        <version>1.0-SNAPSHOT
-        </version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.0.0.RC3</version>
     </parent>
+
+    <properties>
+        <start-class>com.id.tick.application.Application</start-class>
+        <jdk-path>d:/Java/jdk1.8.0_45</jdk-path>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <fork>true</fork>
+                    <executable>${jdk-path}/bin/javac</executable>
+                    <compilerVersion>1.8</compilerVersion>
+                </configuration>
+            </plugin>
+        </plugins>
+        <!--<resources>-->
+            <!--<resource>-->
+                <!--<directory>src/main/resources</directory>-->
+            <!--</resource>-->
+            <!--<resource>-->
+                <!--<directory>src/main/webapp</directory>-->
+            <!--</resource>-->
+            <!--<resource>-->
+                <!--<directory>src/main/webapp</directory>-->
+                <!--<filtering>true</filtering>-->
+                <!--<includes>-->
+                    <!--<include>**/*.html</include>-->
+                <!--</includes>-->
+            <!--</resource>-->
+        <!--</resources>-->
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>spring-snapshots</id>
+            <url>http://repo.spring.io/libs-snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <url>http://repo.spring.io/libs-snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
 </project>
