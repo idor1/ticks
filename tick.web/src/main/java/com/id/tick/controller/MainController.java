@@ -1,6 +1,7 @@
 package com.id.tick.controller;
 
-import com.id.tick.Booking;
+import com.id.tick.dto.Booking;
+import com.id.tick.dto.Schedule;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -41,4 +42,16 @@ public class MainController {
     public String index() {
         return "main";
     }
+
+    @RequestMapping("/schedule")
+    public @ResponseBody Schedule getSchedule(@RequestParam String firstStation, @RequestParam String lastStation) {
+        Schedule schedule = new Schedule();
+        Collection<String> trains = new ArrayList<String>();
+        trains.add(firstStation);
+        trains.add(lastStation);
+        schedule.setTrains(trains);
+        return schedule;
+    }
+
+
 }

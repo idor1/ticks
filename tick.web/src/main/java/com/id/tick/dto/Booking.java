@@ -1,4 +1,4 @@
-package com.id.tick;
+package com.id.tick.dto;
 
 import java.util.Collection;
 
