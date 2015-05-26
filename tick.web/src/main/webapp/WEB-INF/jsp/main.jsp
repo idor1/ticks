@@ -1,181 +1,22 @@
+<!DOCTYPE html>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<!doctype html>
-<html lang="en" ng-app id="ng-app">
+<html ng-app="tick">
 <head>
     <title>Main</title>
-    <script src="js/angular.js"></script>
-    <script>
-        function PostsCtrlAjax($scope, $http) {
-            $http({method: 'POST', url: 'js/posts.json'}).success(function (data) {
-                $scope.posts = data; // response data
-            });
-        }
-    </script>
 </head>
-<body ng-controller="DemoController">
+<body>
 
-<h1>
-    Posting Form Data With $http In AngularJS
-</h1>
-
-<div ng-bind-html="cfdump">
-    <!-- To be populated with the CFDump from the server. -->
+<div ng-controller="TickController as tick">
+    <h1> {{tick.product.name}} </h1>
+    <h2> {{tick.product.price}} </h2>
+    <p> {{tick.product.description}} </p>
 </div>
-
-
-<!-- Initialize scripts. -->
-<%--<script type="text/javascript" src="../jquery/jquery-2.1.0.min.js"></script>--%>
-<script type="text/javascript" src="js/angular.js"></script>
-<script type="text/javascript">
-
-    // Define the module for our AngularJS application.
-    var app = angular.module( "Demo", [] );
-
-
-    // -------------------------------------------------- //
-    // -------------------------------------------------- //
-
-
-    // I control the main demo.
-    app.controller(
-            "DemoController",
-            function( $scope, $http, transformRequestAsFormPost ) {
-
-                // I hold the data-dump of the FORM scope from the server-side.
-                $scope.cfdump = "";
-
-                // By default, the $http service will transform the outgoing request by
-                // serializing the data as JSON and then posting it with the content-
-                // type, "application/json". When we want to post the value as a FORM
-                // post, we need to change the serialization algorithm and post the data
-                // with the content-type, "application/x-www-form-urlencoded".
-                var request = $http({
-                    method: "post",
-                    url: "process.cfm",
-                    transformRequest: transformRequestAsFormPost,
-                    data: {
-                        id: 4,
-                        name: "Kim",
-                        status: "Best Friend"
-                    }
-                });
-
-                // Store the data-dump of the FORM scope.
-                request.success(
-                        function( html ) {
-
-                            $scope.cfdump = html;
-
-                        }
-                );
-
-            }
-    );
-
-
-    // -------------------------------------------------- //
-    // -------------------------------------------------- //
-
-
-    // I provide a request-transformation method that is used to prepare the outgoing
-    // request as a FORM post instead of a JSON packet.
-    app.factory(
-            "transformRequestAsFormPost",
-            function() {
-
-                // I prepare the request data for the form post.
-                function transformRequest( data, getHeaders ) {
-
-                    var headers = getHeaders();
-
-                    headers[ "Content-type" ] = "application/x-www-form-urlencoded; charset=utf-8";
-
-                    return( serializeData( data ) );
-
-                }
-
-
-                // Return the factory value.
-                return( transformRequest );
-
-
-                // ---
-                // PRVIATE METHODS.
-                // ---
-
-
-                // I serialize the given Object into a key-value pair string. This
-                // method expects an object and will default to the toString() method.
-                // --
-                // NOTE: This is an atered version of the jQuery.param() method which
-                // will serialize a data collection for Form posting.
-                // --
-                // https://github.com/jquery/jquery/blob/master/src/serialize.js#L45
-                function serializeData( data ) {
-
-                    // If this is not an object, defer to native stringification.
-                    if ( ! angular.isObject( data ) ) {
-
-                        return( ( data == null ) ? "" : data.toString() );
-
-                    }
-
-                    var buffer = [];
-
-                    // Serialize each key in the object.
-                    for ( var name in data ) {
-
-                        if ( ! data.hasOwnProperty( name ) ) {
-
-                            continue;
-
-                        }
-
-                        var value = data[ name ];
-
-                        buffer.push(
-                                encodeURIComponent( name ) +
-                                "=" +
-                                encodeURIComponent( ( value == null ) ? "" : value )
-                        );
-
-                    }
-
-                    // Serialize the buffer and clean it up for transportation.
-                    var source = buffer
-                                    .join( "&" )
-                                    .replace( /%20/g, "+" )
-                            ;
-
-                    return( source );
-
-                }
-
-            }
-    );
-
-
-    // -------------------------------------------------- //
-    // -------------------------------------------------- //
-
-
-    // I override the "expected" $sanitize service to simply allow the HTML to be
-    // output for the current demo.
-    // --
-    // NOTE: Do not use this version in production!! This is for development only.
-    app.value(
-            "$sanitize",
-            function( html ) {
-
-                return( html );
-
-            }
-    );
-
-</script>
+<script type="text/javascript" src="angular.js"></script>
+<script type="text/javascript" src="app.js"></script>
 
 </body>
 </html>
