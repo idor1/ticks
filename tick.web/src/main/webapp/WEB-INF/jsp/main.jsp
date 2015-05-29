@@ -15,6 +15,13 @@
     <h2> {{tick.product.price}} </h2>
     <p> {{tick.product.description}} </p>
 </div>
+
+<div ng-controller="ScheduleController as schedule">
+    <div ng-repeat="train in schedule.trains">
+        <h1> {{train}} </h1>
+    </div>
+</div>
+
 <script type="text/javascript" src="angular.js"></script>
 <script type="text/javascript" src="app.js"></script>
 

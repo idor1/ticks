@@ -47,8 +47,8 @@ public class MainController {
     public @ResponseBody Schedule getSchedule(@RequestParam String firstStation, @RequestParam String lastStation) {
         Schedule schedule = new Schedule();
         Collection<String> trains = new ArrayList<String>();
-        trains.add(firstStation);
-        trains.add(lastStation);
+        trains.add(firstStation + "_FS");
+        trains.add(lastStation + "_LS");
         schedule.setTrains(trains);
         return schedule;
     }
