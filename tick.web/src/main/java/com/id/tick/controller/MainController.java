@@ -1,7 +1,10 @@
 package com.id.tick.controller;
 
+import com.id.tick.connector.ApiConnector;
 import com.id.tick.dto.Booking;
 import com.id.tick.dto.Schedule;
+import com.id.tick.dto.Station;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +17,8 @@ import java.util.Collection;
  */
 @Controller
 public class MainController {
+    @Autowired
+    private ApiConnector apiConnector;
 
     @Value("${application.message:Hello World}")
     private String message = "Hello World";
@@ -53,5 +58,14 @@ public class MainController {
         return schedule;
     }
 
+    @RequestMapping("/station/departures/{criteria}")
+    public @ResponseBody Collection<Station> getDepartures(@PathVariable String criteria) {
+        return apiConnector.getDepartures(criteria);
+    }
+
+    @RequestMapping("/station/arrivals/{criteria}")
+    public @ResponseBody Collection<Station> getArrivals(@PathVariable String criteria) {
+        return apiConnector.getArrivals(criteria);
+    }
 
 }
