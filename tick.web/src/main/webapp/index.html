@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html ng-app="tick">
+<head>
+    <title>Main</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="css/styles.css" media="screen"/>
+</head>
+<body>
+<div ng-controller="StationController as stationController">
+    <table class="inlineTable">
+        <thead>
+        <tr>
+            <th>Departures:<input type="text" ng-model="criteria.departuresCriteria"/>
+                <button ng-click="stationController.findDepartures()">Search</button>
+            </th>
+        </tr>
+        </thead>
+        <tr ng-repeat="station in departures">
+            <td>
+                <div>
+                    <a href="" ng-click="stationController.setDeparture(station.name)">{{station.name}}</a>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <table class="inlineTable">
+        <thead>
+        <tr>
+            <th>Arrivals:<input type="text" ng-model="criteria.arrivalsCriteria"/>
+                <button ng-click="stationController.findArrivals()">Search</button>
+            </th>
+        </tr>
+        </thead>
+
+        <tr ng-repeat="station in arrivals">
+            <td>
+                <div>
+                    <a href="" ng-click="stationController.setArrival(station.name)">{{station.name}}</a>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+<div ng-controller="RouteController as routeController">
+    Start: {{from}}<br/>
+    Destination: {{to}}<br/>
+    <button ng-click="routeController.findRoute()">Search Route</button>
+</div>
+
+<script type="text/javascript" src="angular.js"></script>
+<script type="text/javascript" src="app.js"></script>
+<script type="text/javascript" src="scripts/controllers/routeController.js"></script>
+<script type="text/javascript" src="scripts/controllers/stationController.js"></script>
+<script type="text/javascript" src="scripts/controllers/scheduleController.js"></script>
+<script type="text/javascript" src="scripts/services/stationService.js"></script>
+<script type="text/javascript" src="scripts/services/scheduleService.js"></script>
+<script type="text/javascript" src="angular-route.js"></script>
+</body>
+</html>

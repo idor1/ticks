@@ -1,6 +1,7 @@
 package com.id.tick.connector;
 
 import com.google.gson.Gson;
+import com.id.tick.dto.Route;
 import com.id.tick.dto.Station;
 import com.id.tick.dto.Stations;
 import org.apache.log4j.Logger;
@@ -69,6 +70,10 @@ public class ApiConnector {
             e.printStackTrace();
         }
         return stations;
+    }
+
+    public Route findRoute(String departureStation, String arrivalStation) {
+        return new Route();
     }
 
     private Collection<Station> getStations(String urlString, String authStr) throws IOException {

@@ -43,17 +43,17 @@ public class MainController {
         return booking.toString();
     }
 
-    @RequestMapping("/index")
-    public String index() {
-        return "main";
-    }
+//    @RequestMapping("/index")
+//    public String index() {
+//        return "main";
+//    }
 
     @RequestMapping("/schedule")
-    public @ResponseBody Schedule getSchedule(@RequestParam String firstStation, @RequestParam String lastStation) {
+    public @ResponseBody Schedule getSchedule(@RequestParam String start, @RequestParam String destination) {
         Schedule schedule = new Schedule();
         Collection<String> trains = new ArrayList<String>();
-        trains.add(firstStation + "_FS");
-        trains.add(lastStation + "_LS");
+        trains.add(start + "_FS");
+        trains.add(destination + "_LS");
         schedule.setTrains(trains);
         return schedule;
     }
