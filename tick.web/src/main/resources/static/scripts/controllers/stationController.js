@@ -2,7 +2,7 @@ angular.module('stationController', ['stationService']).controller("StationContr
     $scope.arrivals = stationService.getArrivals();
     $scope.departures = stationService.getDepartures();
 
-    $scope.criteria = {arrivalsCriteria: "st1", departuresCriteria: "st2"};
+    $scope.criteria = {departuresCriteria: "Ки", arrivalsCriteria: "Ль"};
 
     this.findArrivals = function () {
         $http.get('station/arrivals/' + $scope.criteria.arrivalsCriteria).
@@ -35,16 +35,16 @@ angular.module('stationController', ['stationService']).controller("StationContr
             });
     };
 
-    this.setDeparture = function (stationName) {
-        console.log(stationName);
-        stationService.setFrom(stationName);
-        $rootScope.$broadcast('DChanged', stationName);
+    this.setDeparture = function (station) {
+        console.log(station.name);
+        stationService.setFrom(station);
+        $rootScope.$broadcast('DChanged', station);
     };
 
-    this.setArrival = function (stationName) {
-        console.log(stationName);
-        stationService.setTo(stationName);
-        $rootScope.$broadcast('AChanged', stationName);
+    this.setArrival = function (station) {
+        console.log(station.name);
+        stationService.setTo(station);
+        $rootScope.$broadcast('AChanged', station);
     };
 
     $scope.$on('ArrivalsChanged', function (event, x) {

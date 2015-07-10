@@ -6,7 +6,7 @@
     <version>1.0-SNAPSHOT</version>
     <name>tick.core</name>
     <parent>
-        <groupId>com.id.tick</groupId>
+        <groupId>com.idx.tick</groupId>
         <artifactId>tick.master</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>

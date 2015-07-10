@@ -1,6 +1,6 @@
 angular.module('stationService', []).factory('stationService', function () {
-    var from = "";
-    var to = "";
+    var from = {};
+    var to = {};
 
     var arrivals = [];
     var departures = [];
