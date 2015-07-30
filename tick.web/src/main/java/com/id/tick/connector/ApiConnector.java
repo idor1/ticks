@@ -1,6 +1,7 @@
 package com.id.tick.connector;
 
 import com.google.gson.Gson;
+import com.id.tick.dto.CarMap;
 import com.id.tick.dto.Route;
 import com.id.tick.dto.Station;
 import com.id.tick.dto.Stations;
@@ -114,5 +115,15 @@ public class ApiConnector {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public CarMap carMap(String guididx, int cabinNumber) {
+        String routeUrl = "https://" + host + "/car_map/ru/" + guididx + "/" + cabinNumber;
+
+        CarMap carMap = get(routeUrl, authStr, CarMap.class);
+
+        assert carMap != null;
+
+        return carMap;
     }
 }
