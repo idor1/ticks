@@ -1,10 +1,9 @@
 package com.id.tick.connector;
 
 import com.google.gson.Gson;
-import com.id.tick.dto.CarMap;
-import com.id.tick.dto.Route;
-import com.id.tick.dto.Station;
-import com.id.tick.dto.Stations;
+import com.id.tick.booking.CabinSeat;
+import com.id.tick.dto.request.BillRequest;
+import com.id.tick.dto.response.*;
 import org.apache.log4j.Logger;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,13 +12,11 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Collection;
+import java.util.Iterator;
 
 
 /**
@@ -90,12 +87,13 @@ public class ApiConnector {
     }
 
     private <T> T get(String urlString, String authStr, Class<T> typeToGet) {
+        HttpsURLConnection con = null;
         try {
 
             String encoded = Base64.encodeBase64String(authStr.getBytes());
 
             URL url = new URL(urlString);
-            HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+            con = (HttpsURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.setDoOutput(true);
             con.setRequestProperty("Authorization", "Basic " + encoded);
@@ -113,6 +111,46 @@ public class ApiConnector {
             return gson.fromJson(content.toString(), typeToGet);
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            con.disconnect();
+        }
+        return null;
+    }
+
+    private <T, P> T post(String urlString, String authStr, P payload, Class<T> typeToGet) {
+        HttpsURLConnection con = null;
+        try {
+
+            String encoded = Base64.encodeBase64String(authStr.getBytes());
+
+            URL url = new URL(urlString);
+            con = (HttpsURLConnection) url.openConnection();
+            con.setRequestMethod("POST");
+            con.setDoOutput(true);
+            con.setRequestProperty("Authorization", "Basic " + encoded);
+            con.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+            con.setRequestProperty("Content-Type", "application/json; charset=uft-8");
+
+            Gson gson = new Gson();
+
+            String json = gson.toJson(payload);
+
+            OutputStream os = con.getOutputStream();
+            os.write(json.getBytes());
+            os.flush();
+
+            BufferedReader rd = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+            String line;
+            StringBuilder content = new StringBuilder();
+            while ((line = rd.readLine()) != null) {
+                content.append(line);
+            }
+
+            return gson.fromJson(content.toString(), typeToGet);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            con.disconnect();
         }
         return null;
     }
@@ -125,5 +163,25 @@ public class ApiConnector {
         assert carMap != null;
 
         return carMap;
+    }
+
+    public Invoice bill(String guididx, byte cabinNumber, Collection<CabinSeat> seats, BillRequest billRequest) {
+        String seatsString = "";
+
+        Iterator<CabinSeat> seatIterator = seats.iterator();
+        for (byte i = 0; i < seats.size(); i++) {
+            seatsString += seatIterator.next().getSeat();
+            if (i < seats.size() - 1) {
+                seatsString += ",";
+            }
+        }
+
+        String routeUrl = "https://" + host + "/bill/ru/" + guididx + "/" + cabinNumber + "/" + seatsString;
+
+        Invoice invoice = post(routeUrl, authStr, billRequest, Invoice.class);
+
+        assert invoice != null;
+
+        return invoice;
     }
 }

@@ -1,16 +1,11 @@
 package com.id.tick.schedule;
 
 import com.id.tick.booking.BookingManager;
-import com.id.tick.connector.ApiConnector;
-import com.id.tick.dto.BookingRequest;
-import com.id.tick.dto.Route;
-import com.id.tick.dto.RouteVariant;
+import com.id.tick.dto.ui.BookingRequest;
 import com.id.tick.mail.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;

@@ -1,13 +1,15 @@
 package com.id.tick.controller;
 
 import com.id.tick.connector.ApiConnector;
-import com.id.tick.dto.*;
+import com.id.tick.dto.ui.Booking;
+import com.id.tick.dto.ui.BookingRequest;
+import com.id.tick.dto.response.Route;
+import com.id.tick.dto.ui.Schedule;
+import com.id.tick.dto.response.Station;
 import com.id.tick.schedule.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.condition.ConsumesRequestCondition;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,7 +44,8 @@ public class MainController {
     }
 
     @RequestMapping("/schedule")
-    public @ResponseBody Schedule getSchedule(@RequestParam String start, @RequestParam String destination,
+    public @ResponseBody
+    Schedule getSchedule(@RequestParam String start, @RequestParam String destination,
                                               @RequestParam String date) {
         Schedule schedule = new Schedule();
         Collection<String> trains = new ArrayList<String>();

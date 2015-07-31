@@ -6,6 +6,15 @@ package com.id.tick.booking;
 public class CabinSeat {
     private int cabin;
     private int seat;
+    private String name;
+    private String surname;
+
+    public CabinSeat(int cabin, int seat, String name, String surname) {
+        this.cabin = cabin;
+        this.seat = seat;
+        this.name = name;
+        this.surname = surname;
+    }
 
     public CabinSeat(int cabin, int seat) {
         this.cabin = cabin;
@@ -26,5 +35,21 @@ public class CabinSeat {
 
     public void setSeat(int seat) {
         this.seat = seat;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 }

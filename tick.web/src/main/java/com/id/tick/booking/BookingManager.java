@@ -1,7 +1,16 @@
 package com.id.tick.booking;
 
 import com.id.tick.connector.ApiConnector;
-import com.id.tick.dto.*;
+import com.id.tick.dto.request.BillOptions;
+import com.id.tick.dto.request.BillRequest;
+import com.id.tick.dto.request.Person;
+import com.id.tick.dto.request.SeatBookingRequest;
+import com.id.tick.dto.response.CarMap;
+import com.id.tick.dto.response.Invoice;
+import com.id.tick.dto.response.Route;
+import com.id.tick.dto.response.RouteVariant;
+import com.id.tick.dto.ui.BookingRequest;
+import com.id.tick.dto.ui.Passenger;
 import org.joda.time.Duration;
 import org.joda.time.Period;
 import org.joda.time.format.PeriodFormatter;
@@ -9,6 +18,7 @@ import org.joda.time.format.PeriodFormatterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
@@ -30,18 +40,45 @@ public class BookingManager {
 
         Collection<CabinSeat> freeSeats = findFreeCabinSeats(routeVariant);
 
+        Collection<CabinSeat> seatsToBook = new ArrayList<CabinSeat>();
+
         for (Passenger passenger : bookingRequest.getPassengers()) {
             String firstName = passenger.getFirstName();
             String lastName = passenger.getLastName();
 
-            if (firstName != null && lastName != null) {
+            if (firstName != null && !firstName.equals("") && lastName != null && !lastName.equals("")) {
                 if (routeVariant.getSeats().getRw_sitting().getFree() > 0) {
                     CabinSeat seat = findFreeCabinSeat(freeSeats);
+                    seat.setName(firstName);
+                    seat.setSurname(lastName);
+                    seatsToBook.add(seat);
                 }
             }
         }
 
-        return "";
+        return bill(routeVariant.getGuididx(), (byte) cabinNumber, seatsToBook, bookingRequest);
+    }
+
+    private String bill(String guididx, byte cabinNumber, Collection<CabinSeat> seatsToBook, BookingRequest bookingRequest) {
+        BillRequest billRequest = new BillRequest();
+        for (CabinSeat seat : seatsToBook) {
+            SeatBookingRequest seatBookingRequest = new SeatBookingRequest();
+            Person person = new Person();
+            person.setName(seat.getName());
+            person.setSurname(seat.getSurname());
+            seatBookingRequest.setPerson(person);
+            billRequest.getSeats().add(seatBookingRequest);
+        }
+
+        BillOptions billOptions = new BillOptions();
+        billOptions.setOwner_email(bookingRequest.getEmail());
+        billOptions.setOwner_phone("+385556663322");
+        billOptions.setType("reservation");
+        billRequest.setOptions(billOptions);
+
+        Invoice invoice = apiConnector.bill(guididx, cabinNumber, seatsToBook, billRequest);
+
+        return invoice.getAsps_code_2();
     }
 
     private Collection<CabinSeat> findFreeCabinSeats(RouteVariant routeVariant) {
