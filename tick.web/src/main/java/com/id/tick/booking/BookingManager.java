@@ -34,7 +34,7 @@ public class BookingManager {
     public String bookTickets(BookingRequest bookingRequest) {
         assert bookingRequest.getDate() != null;
 
-        Route route = apiConnector.findRoute(bookingRequest.getFrom().getIdx(), bookingRequest.getTo().getIdx(), bookingRequest.getDate());
+        Route route = findRoute(bookingRequest);
 
         RouteVariant routeVariant = findFastestVariant(route.getVars());
 
@@ -57,6 +57,10 @@ public class BookingManager {
         }
 
         return bill(routeVariant.getGuididx(), (byte) cabinNumber, seatsToBook, bookingRequest);
+    }
+
+    public Route findRoute(BookingRequest bookingRequest) {
+        return apiConnector.findRoute(bookingRequest.getFrom().getIdx(), bookingRequest.getTo().getIdx(), bookingRequest.getDate());
     }
 
     private String bill(String guididx, byte cabinNumber, Collection<CabinSeat> seatsToBook, BookingRequest bookingRequest) {

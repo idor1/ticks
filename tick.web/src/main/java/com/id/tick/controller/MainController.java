@@ -6,7 +6,7 @@ import com.id.tick.dto.ui.BookingRequest;
 import com.id.tick.dto.response.Route;
 import com.id.tick.dto.ui.Schedule;
 import com.id.tick.dto.response.Station;
-import com.id.tick.schedule.Scheduler;
+import com.id.tick.schedule.BookingScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ public class MainController {
     private ApiConnector apiConnector;
 
     @Autowired
-    private Scheduler scheduler;
+    private BookingScheduler bookingScheduler;
 
     @Value("${application.message:Hello World}")
     private String message = "Hello World";
@@ -58,7 +58,7 @@ public class MainController {
 
     @RequestMapping(value = "/booking", method = RequestMethod.POST, consumes = "application/json")
     public String scheduleBooking(@RequestBody BookingRequest request) {
-        return scheduler.scheduleBooking(request);
+        return bookingScheduler.scheduleBooking(request);
     }
 
     @RequestMapping(value = "/station/departures/{criteria}", method = RequestMethod.GET)
