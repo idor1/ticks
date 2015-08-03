@@ -15,4 +15,11 @@ public class Route {
     public void setVars(Collection<RouteVariant> vars) {
         this.vars = vars;
     }
+
+    @Override
+    public String toString() {
+        return "Route{" +
+                "vars=" + vars +
+                '}';
+    }
 }

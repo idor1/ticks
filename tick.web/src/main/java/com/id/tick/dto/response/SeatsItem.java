@@ -40,4 +40,14 @@ public class SeatsItem {
     public void setTos(int tos) {
         this.tos = tos;
     }
+
+    @Override
+    public String toString() {
+        return "SeatsItem{" +
+                "free=" + free +
+                ", price=" + price +
+                ", fee=" + fee +
+                ", tos=" + tos +
+                '}';
+    }
 }

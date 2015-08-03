@@ -80,4 +80,18 @@ public class RouteVariant {
     public void setSeats(Seats seats) {
         this.seats = seats;
     }
+
+    @Override
+    public String toString() {
+        return "RouteVariant{" +
+                "guididx='" + guididx + '\'' +
+                ", dep_date='" + dep_date + '\'' +
+                ", arr_date='" + arr_date + '\'' +
+                ", src_dep='" + src_dep + '\'' +
+                ", dst_arr='" + dst_arr + '\'' +
+                ", duration='" + duration + '\'' +
+                ", trip=" + trip +
+                ", seats=" + seats +
+                '}';
+    }
 }

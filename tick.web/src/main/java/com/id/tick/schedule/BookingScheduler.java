@@ -17,8 +17,6 @@ import java.util.Random;
 @Service
 public class BookingScheduler {
     @Autowired
-    private ScheduleProvider scheduleProvider;
-    @Autowired
     private MailSender mailSender;
     @Autowired
     private BookingManager bookingManager;
@@ -29,19 +27,21 @@ public class BookingScheduler {
         String ref = String.valueOf(new Random().nextInt());
 
 //        bookingManager.bookTickets(bookingRequest);
-        BookingJob bookingJob = new BookingJob(bookingRequest, bookingManager);
-
         int a = 76500;
         double b = 3060.0;
+        JobKey jobKey = JobKey.jobKey(JobKeyProvider.nextKey());
+
         JobDetail job = JobBuilder.newJob(BookingJob.class)
-                .withIdentity("bookingJob", "group1").build();
+                .withIdentity(jobKey).build();
+
+        job.getJobDataMap().put(jobKey.getName(), new BookingJobContext(bookingRequest, bookingManager));
 
         Trigger trigger = TriggerBuilder
                 .newTrigger()
-                .withIdentity("bookingTrigger", "group1")
+                .withIdentity(jobKey.getName(), "group1")
                 .withSchedule(
                         SimpleScheduleBuilder.simpleSchedule()
-                                .withIntervalInMinutes(1).repeatForever())
+                                .withIntervalInMinutes(5).repeatForever())
                 .build();
 
         try {

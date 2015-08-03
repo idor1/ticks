@@ -8,6 +8,7 @@ angular.module('routeController', ['stationService']).controller("RouteControlle
             name: "",
             idx: ""
         },
+        trainId : "724",
         email: "igor.doroshenko@gmail.com",
         passengers: [
             {

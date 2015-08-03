@@ -17,6 +17,8 @@ public class BookingRequest {
 
     private String email;
 
+    private String trainId;
+
     public Collection<Passenger> getPassengers() {
         return passengers;
     }
@@ -55,5 +57,13 @@ public class BookingRequest {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getTrainId() {
+        return trainId;
+    }
+
+    public void setTrainId(String trainId) {
+        this.trainId = trainId;
     }
 }
