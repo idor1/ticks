@@ -9,6 +9,7 @@ import com.id.tick.dto.response.Station;
 import com.id.tick.schedule.BookingScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -56,9 +57,15 @@ public class MainController {
         return schedule;
     }
 
-    @RequestMapping(value = "/booking", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/booking", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public String scheduleBooking(@RequestBody BookingRequest request) {
         return bookingScheduler.scheduleBooking(request);
+    }
+
+    @RequestMapping(value = "/variants", method = RequestMethod.GET)
+    public @ResponseBody Route getTrainNumbers(@RequestParam String from, @RequestParam String to, @RequestParam String date) {
+        return apiConnector.findRoute(from, to, date);
     }
 
     @RequestMapping(value = "/station/departures/{criteria}", method = RequestMethod.GET)

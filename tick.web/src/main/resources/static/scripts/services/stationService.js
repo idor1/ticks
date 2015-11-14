@@ -5,6 +5,8 @@ angular.module('stationService', []).factory('stationService', function () {
     var arrivals = [];
     var departures = [];
 
+    var bookingRequest = {};
+
     return {
         setFrom: function (station) {
             from = station;
@@ -36,6 +38,14 @@ angular.module('stationService', []).factory('stationService', function () {
 
         getDepartures: function () {
             return departures;
+        },
+
+        setBookingRequest: function (request) {
+            bookingRequest = request;
+        },
+
+        getBookingRequest: function () {
+            return bookingRequest;
         }
     };
 });

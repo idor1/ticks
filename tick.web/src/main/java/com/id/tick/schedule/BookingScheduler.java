@@ -27,8 +27,6 @@ public class BookingScheduler {
         String ref = String.valueOf(new Random().nextInt());
 
 //        bookingManager.bookTickets(bookingRequest);
-        int a = 76500;
-        double b = 3060.0;
         JobKey jobKey = JobKey.jobKey(JobKeyProvider.nextKey());
 
         JobDetail job = JobBuilder.newJob(BookingJob.class)

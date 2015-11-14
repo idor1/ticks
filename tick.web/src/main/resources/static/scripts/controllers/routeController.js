@@ -1,5 +1,5 @@
 angular.module('routeController', ['stationService']).controller("RouteController", function ($rootScope, $scope, $http, $location, stationService) {
-    $scope.bookingRequest = {
+    $rootScope.bookingRequest = {
         from: {
             name: "",
             idx: ""
@@ -8,7 +8,9 @@ angular.module('routeController', ['stationService']).controller("RouteControlle
             name: "",
             idx: ""
         },
-        trainId : "724",
+        vars : {},
+        date : "",
+        trainId : "",
         email: "igor.doroshenko@gmail.com",
         passengers: [
             {
@@ -30,14 +32,15 @@ angular.module('routeController', ['stationService']).controller("RouteControlle
         ]
     };
 
-    $scope.referenceNumber = "123";
-
-        this.booking = function () {
-        $http.post('booking', $scope.bookingRequest).
+        this.searchTrainNumbers = function () {
+        $http.get('variants?from=' + $rootScope.bookingRequest.from.idx +
+            '&to=' + $rootScope.bookingRequest.to.idx + '&date=' + $rootScope.bookingRequest.date).
             success(function (data, status, headers, config) {
-                console.log('Schedule called');
-                $scope.go('schedule');
-                $rootScope.$broadcast('SChanged', data);
+                console.log('Variants called');
+                console.log(data);
+                $scope.bookingRequest.vars = data.vars;
+                stationService.setBookingRequest($rootScope.bookingRequest);
+                $scope.go('trains');
             }).
             error(function (data, status, headers, config) {
                 console.log(status);
@@ -47,14 +50,14 @@ angular.module('routeController', ['stationService']).controller("RouteControlle
 
     $scope.$on('DChanged', function (event, x) {
         console.log("DChanged=", x);
-        $scope.bookingRequest.from.idx = x.idx;
-        $scope.bookingRequest.from.name = x.name;
+        $rootScope.bookingRequest.from.idx = x.idx;
+        $rootScope.bookingRequest.from.name = x.name;
     });
 
     $scope.$on('AChanged', function (event, x) {
         console.log("AChanged=", x);
-        $scope.bookingRequest.to.idx = x.idx;
-        $scope.bookingRequest.to.name = x.name;
+        $rootScope.bookingRequest.to.idx = x.idx;
+        $rootScope.bookingRequest.to.name = x.name;
     });
 
     $scope.go = function (path) {
