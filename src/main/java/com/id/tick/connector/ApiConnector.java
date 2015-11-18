@@ -14,6 +14,7 @@ import javax.annotation.PostConstruct;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.Iterator;
@@ -108,7 +109,9 @@ public class ApiConnector {
 
             Gson gson = new Gson();
 
-            return gson.fromJson(content.toString(), typeToGet);
+
+//            URLDecoder.decode(content.toString(), "UTF-8");
+            return gson.fromJson(URLDecoder.decode(content.toString(), "UTF-8"), typeToGet);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

@@ -33,6 +33,7 @@ angular.module('routeController', ['stationService']).controller("RouteControlle
     };
 
         this.searchTrainNumbers = function () {
+            console.log(stationService.getFrom());
         $http.get('variants?from=' + $rootScope.bookingRequest.from.idx +
             '&to=' + $rootScope.bookingRequest.to.idx + '&date=' + $rootScope.bookingRequest.date).
             success(function (data, status, headers, config) {

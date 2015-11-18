@@ -1,5 +1,6 @@
 package com.id.tick.schedule;
 
+import com.id.tick.booking.BookingManager;
 import com.id.tick.dto.response.Route;
 import com.id.tick.dto.response.RouteVariant;
 import com.id.tick.dto.ui.BookingRequest;
@@ -13,14 +14,20 @@ public class BookingJob implements Job {
 
         JobKey jobKey = jobExecutionContext.getJobDetail().getKey();
 
-        BookingJobContext bookingJobContext = (BookingJobContext) jobExecutionContext.getJobDetail().getJobDataMap().get(jobKey.getName());
+//        BookingRequest bookingRequest = bookingJobContext.getBookingRequest();
 
-        BookingRequest bookingRequest = bookingJobContext.getBookingRequest();
+        ScheduleRequestService scheduleRequestService = (ScheduleRequestService) jobExecutionContext.get(BookingScheduler.SCHEDULE_REQUEST_SERVICE_KEY);
 
-        Route route = bookingJobContext.getBookingManager().findRoute(bookingRequest);
+        BookingManager bookingManager = (BookingManager) jobExecutionContext.get(BookingScheduler.BOOKING_MANAGER_SERVICE_KEY);
+
+        //TODO: continue here
+        BookingRequest currentRequest = scheduleRequestService.getBookingRequest();
+
+        Route route = bookingManager.findRoute(currentRequest);
+
         System.out.println("Trains found: " + route);
 
-        String trainId = findSufficientTrain(route, bookingRequest);
+        String trainId = findSufficientTrain(route, currentRequest);
         if (trainId != null) {
             System.out.println("Specific train found: " + trainId);
             try {

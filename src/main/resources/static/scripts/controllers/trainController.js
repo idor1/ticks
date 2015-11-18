@@ -5,7 +5,7 @@ angular.module('trainController', ['stationService']).controller("TrainControlle
 
     $scope.referenceNumber = "";
 
-        this.booking = function () {
+    this.booking = function () {
         $http.post('booking', $scope.bookingRequest).
             success(function (data, status, headers, config) {
                 console.log('Schedule called');
@@ -18,6 +18,10 @@ angular.module('trainController', ['stationService']).controller("TrainControlle
                 console.log(status);
                 console.log(data);
             });
+    };
+
+    this.setTrain = function (trainId) {
+        $scope.bookingRequest.trainId = trainId;
     };
 
     $scope.go = function (path) {

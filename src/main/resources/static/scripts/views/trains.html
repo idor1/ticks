@@ -1,21 +1,29 @@
 <div ng-controller="TrainController as trainController">
     <div ng-repeat="variant in bookingRequest.vars" style="float:left;">
-        {{variant.trip.id}}<br/>
+        <div>
+            <a href="" ng-click="trainController.setTrain(variant.trip.id)">{{variant.trip.id}}</a>
+            Departure: {{variant.dep_date}} {{variant.src_dep}} Arrival: {{variant.arr_date}} {{variant.dst_arr}}
+            Duration: {{variant.duration}}
+        </div>
     </div>
-    Date: {{bookingRequest.date}}<br/>
+    <br/>
     Train #: <input type="text" ng-model="bookingRequest.trainId"/><br/>
     Email to notify: <input type="text" ng-model="bookingRequest.email"/><br/>
-<button ng-click="trainController.booking()">Book Tickets</button><br/>
+    <button ng-click="trainController.booking()">Book Tickets</button>
+    <br/>
 
-<br/>
-<div ng-repeat="passenger in bookingRequest.passengers" style="float:left;">
-    <div style="float:left;">
-        <label>{{$index + 1}}. First name:</label>
-        <input type="text" ng-model="passenger.firstName"/>
+    <br/>
+
+    <div ng-repeat="passenger in bookingRequest.passengers" style="float:left;">
+        <div>
+            <div style="float:left;">
+                <label>{{$index + 1}}. First name:</label>
+                <input type="text" ng-model="passenger.firstName"/>
+            </div>
+            <div style="float:left;">
+                <label>Last name:</label>
+                <input type="text" ng-model="passenger.lastName"/>
+            </div>
+        </div>
     </div>
-    <div style="float:left;">
-        <label>Last name:</label>
-        <input type="text" ng-model="passenger.lastName"/>
-    </div>
-</div>
 </div>

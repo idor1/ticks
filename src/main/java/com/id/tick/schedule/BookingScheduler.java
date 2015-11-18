@@ -7,6 +7,7 @@ import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -16,38 +17,50 @@ import java.util.Random;
  */
 @Service
 public class BookingScheduler {
+    public static final String SCHEDULE_REQUEST_SERVICE_KEY = "ScheduleRequestService";
+    public static final String BOOKING_MANAGER_SERVICE_KEY = "BookingManagerService";
+
     @Autowired
     private MailSender mailSender;
+    @Autowired
+    private ScheduleRequestService scheduleRequestService;
     @Autowired
     private BookingManager bookingManager;
 
     private Map<String, BookingRequest> references = new HashMap<String, BookingRequest>();
 
-    public String scheduleBooking(BookingRequest bookingRequest) {
-        String ref = String.valueOf(new Random().nextInt());
-
-//        bookingManager.bookTickets(bookingRequest);
+    @PostConstruct
+    public void initializeJobs() {
         JobKey jobKey = JobKey.jobKey(JobKeyProvider.nextKey());
 
         JobDetail job = JobBuilder.newJob(BookingJob.class)
                 .withIdentity(jobKey).build();
 
-        job.getJobDataMap().put(jobKey.getName(), new BookingJobContext(bookingRequest, bookingManager));
-
         Trigger trigger = TriggerBuilder
                 .newTrigger()
-                .withIdentity(jobKey.getName(), "group1")
+                .withIdentity(jobKey.getName(), "trainNumberGroup")
                 .withSchedule(
                         SimpleScheduleBuilder.simpleSchedule()
-                                .withIntervalInMinutes(5).repeatForever())
+                                .withIntervalInMinutes(1).repeatForever())
                 .build();
 
         try {
-            ScheduleProvider.getScheduler().scheduleJob(job, trigger);
+            Scheduler scheduler = ScheduleProvider.getScheduler();
+
+            scheduler.getContext().put(SCHEDULE_REQUEST_SERVICE_KEY, scheduleRequestService);
+            scheduler.getContext().put(BOOKING_MANAGER_SERVICE_KEY, bookingManager);
+
+            scheduler.scheduleJob(job, trigger);
         } catch (SchedulerException e) {
             e.printStackTrace();
         }
+    }
 
+    public String scheduleBooking(BookingRequest bookingRequest) {
+        String ref = String.valueOf(new Random().nextInt());
+
+        //TODO add here
+//        bookingManager.bookTickets(bookingRequest);
         references.put(ref, bookingRequest);
 //        try {
 //            mailSender.generateAndSendEmail(bookingRequest.getEmail());
