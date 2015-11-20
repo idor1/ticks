@@ -7,6 +7,7 @@ import com.id.tick.dto.ui.BookingRequest;
 import org.quartz.*;
 
 import java.util.Collection;
+import java.util.Map;
 
 public class BookingJob implements Job {
     @Override
@@ -21,24 +22,28 @@ public class BookingJob implements Job {
         BookingManager bookingManager = (BookingManager) jobExecutionContext.get(BookingScheduler.BOOKING_MANAGER_SERVICE_KEY);
 
         //TODO: continue here
-        BookingRequest currentRequest = scheduleRequestService.getBookingRequest();
+        Map<String, Collection<BookingRequest>> unprocessedRequests = scheduleRequestService.getUnprocessedRequests();
 
-        Route route = bookingManager.findRoute(currentRequest);
-
-        System.out.println("Trains found: " + route);
-
-        String trainId = findSufficientTrain(route, currentRequest);
-        if (trainId != null) {
-            System.out.println("Specific train found: " + trainId);
-            try {
-                boolean exists = ScheduleProvider.getScheduler().checkExists(jobKey);
-                if (exists) {
-                    ScheduleProvider.getScheduler().deleteJob(jobKey);
-                }
-            } catch (SchedulerException e) {
-                e.printStackTrace();
-            }
+        for (Map.Entry<String, Collection<BookingRequest>> collectionEntry : unprocessedRequests.entrySet()) {
+            collectionEntry.
         }
+
+//        Route route = bookingManager.findRoute(fromIdx, toIdx, date);
+
+//        System.out.println("Trains found: " + route);
+//
+//        String trainId = findSufficientTrain(route, currentRequest);
+//        if (trainId != null) {
+//            System.out.println("Specific train found: " + trainId);
+//            try {
+//                boolean exists = ScheduleProvider.getScheduler().checkExists(jobKey);
+//                if (exists) {
+//                    ScheduleProvider.getScheduler().deleteJob(jobKey);
+//                }
+//            } catch (SchedulerException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     private String findSufficientTrain(Route route, BookingRequest bookingRequest) {
